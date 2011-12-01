@@ -26,7 +26,7 @@ class Matcher
   
   def try text
     return nil unless match = @regexp.match(text)
-    puts "/\\A#{@regexp}/ === #{text.inspect}" if $DEBUG
+    puts "/#{@regexp}/ === #{text.inspect}" if $DEBUG
     @block[match]
     return match
   end
