@@ -52,9 +52,14 @@ class Parser
 
   def parse text
     @text << text
-    while match = @matchers.reverse_each.find { |m| break m if m = m.try(@text) }
+    while match = find_match
       @text = match.post_match
     end
+    self
+  end
+  
+  def find_match
+    @matchers.reverse_each.find { |m| break m if m = m.try(@text) }
   end
 end
 
