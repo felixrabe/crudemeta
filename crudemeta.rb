@@ -24,9 +24,9 @@ class Matcher
     @block = block
   end
   
-  def try line
-    return nil unless match = @regexp.match(line)
-    puts "/\\A#{@regexp}/ === #{line.inspect}" if $DEBUG
+  def try text
+    return nil unless match = @regexp.match(text)
+    puts "/\\A#{@regexp}/ === #{text.inspect}" if $DEBUG
     @block[match]
     return match
   end
