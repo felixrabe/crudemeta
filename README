@@ -74,7 +74,8 @@ To define your funky filter, just do something like this:
     $ alias funky='~/crudemeta.rb ~/fu.pre.cm - ~/fu.post.cm'
 
 E.g. you could put the above /START/ and /PRINT/ and /\d+/ definitions together
-with START into fu.pre.cm, and put PRINT into fu.post.cm.
+with START into fu.pre.cm, and put PRINT into fu.post.cm, to get a filter that
+adds up all positive integers from the input with Bignum support.
 
 To get you inspired to mess with the language on a very meta level, consider
 this:
