@@ -36,14 +36,18 @@ class Parser
   def initialize
     @text = ""
     @matchers = [
-      Matcher.new(/(?m)\A./) { |m| },
-      Matcher.new(/\A\/([^\/]*)\/\s*(.*)$/) { |m|
+      matcher(/(?m)\A./) { |m| },  # fallback for unrecognized text
+      matcher(/\A\/([^\/]*)\/\s*(.*)$/) { |m|  # /REGEXP/ RUBY_CODE
         pattern, statement = m[1..2]
-        @matchers << Matcher.new(Regexp.new '\A' + pattern) { |m|
+        @matchers << matcher(Regexp.new '\A' + pattern) { |m|
           eval statement
         }
       }
     ]
+  end
+
+  def matcher regexp, &block
+    Matcher.new regexp, &block
   end
 
   def parse text
