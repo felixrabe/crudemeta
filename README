@@ -1,0 +1,102 @@
+CrudeMeta Programming Language
+==============================
+
+Define your own programming language or DSL in no time!
+
+CrudeMeta is Ruby-based, which means you will use Ruby regular expressions and
+Ruby statements to define your DSL.
+
+Hello World in CrudeMeta:
+
+    $ ./crudemeta.rb
+    /H/ puts "Hello Crude World!"
+    HHH
+
+This will output "Hello Crude World!" three times.  Exit with Ctrl-D or Ctrl-Z.
+It uses Ruby's ARGF (using gets) to read specified files and/or stdin.
+
+The semantics are very simple.  CrudeMeta is based on a simple array of Matchers
+(Regexp-Block pairs) and starts out with two default Matchers.
+
+The first default Matcher is provided as a fallback and just matches any
+character not matched by another Matcher and does nothing.
+
+The second default Matcher looks for:
+
+    /REGEXP/ RUBYCODE
+
+which extends from the first '/' to the end of the line.  This is how a new
+Matcher is defined in CrudeMeta.
+
+Whenever crudemeta.rb (Parser.parse) is given a chunk of source code (such as a
+line), it looks for the first matching Matcher in the reversed array of Matchers
+and executes the associated block.
+
+
+More examples
+-------------
+
+Another hello example:
+
+    /'([^']+)'/ puts "Hello #{m[1]}!"
+    'Jim' 'Tom'  'Jane', 'Liz'
+
+Adding up some positive integers: (adding negative Floats left as an exercise)
+
+    /START/ $sum = 0
+    /PRINT/ puts $sum
+    /\d+/ $sum += m[0].to_i
+    START
+    10 11 12 13 5 2 99
+    PRINT
+
+
+Tips'n'Tricks
+-------------
+
+Use rlwrap to get some fine readline support:
+
+    $ rlwrap ./crudemeta.rb
+
+To get MacOS-X-like pbcopy and pbpaste on Linux, install xclip and define:
+
+    $ alias pbcopy='xclip -selection clipboard'
+    $ alias pbpaste='xclip -selection clipboard -o'
+
+Now you can copy'n'paste examples and run them directly (assumes Bash):
+
+    $ pbpaste | ./crudemeta.rb    # or, if you want to also use stdin:
+    $ ./crudemeta.rb <(pbpaste) -
+
+To define your funky filter, just do something like this:
+
+    $ edit ~/fu.pre.cm ~/fu.post.cm
+    $ alias funky='~/crudemeta.rb ~/fu.pre.cm - ~/fu.post.cm'
+
+E.g. you could put the above /START/ and /PRINT/ and /\d+/ definitions together
+with START into fu.pre.cm, and put PRINT into fu.post.cm.
+
+To get you inspired to mess with the language on a very meta level, consider
+this:
+
+    /CLEAR/ @matchers.clear
+    CLEAR
+
+
+Legalese
+--------
+
+Copyright (C) 2011 Felix Rabe
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
