@@ -38,10 +38,16 @@ class Parser
     @matchers = [
       matcher(/(?m)\A./) { |m| },  # fallback for unrecognized text
       matcher(/\A\/([^\/]*)\/\s*(.*)$/) { |m|  # /REGEXP/ RUBY_CODE
+        # To be executed with the matched regexp as 'm'
         pattern, statement = m[1..2]
         @matchers << matcher(Regexp.new '\A' + pattern) { |m|
           eval statement
         }
+      },
+      matcher(/\A\/\/\/\s*(.*)$/) { |m|  # /// RUBY_CODE
+        # To be executed immediately
+        statement = m[1]
+        eval statement
       }
     ]
   end
