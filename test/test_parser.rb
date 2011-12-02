@@ -49,11 +49,11 @@ class TestParser < Test::Unit::TestCase
   def test_matching_object_is_accessible_through_m
     code = '
       /// $matches = []
-      /\d+/ $matches << "%#{m[0]}"
       /\w+/ $matches << m[0]
+      /\d+/ $matches << "%#{m[0]}"
       "50 times I walked that 1 path!" she said.
     '
     parse(code)
-    assert_equal %w(%51 times I walked that %1 path she said), $matches
+    assert_equal %w(%50 times I walked that %1 path she said), $matches
   end
 end
